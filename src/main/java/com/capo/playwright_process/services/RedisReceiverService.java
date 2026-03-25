@@ -5,12 +5,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
-import com.capo.playwright_process.request.ImageRedisRequest;
-import com.capo.playwright_process.response.ImageRedisResponse;
+import com.capo.redis_object.ImageRedisRequest;
+import com.capo.redis_object.ImageRedisResponse;
 
 @Service
 public class RedisReceiverService {
@@ -20,7 +21,7 @@ public class RedisReceiverService {
 	private final ExexutingProcessRenderHtml exexutingProcessRender;
 	
 	public RedisReceiverService(RedisTemplate<String, Object> redisTemplate,
-			ChannelTopic responseTopic, ExexutingProcessRenderHtml exexutingProcessRender) {
+			@Qualifier("responseTopic") ChannelTopic responseTopic, ExexutingProcessRenderHtml exexutingProcessRender) {
 		this.redisTemplate= redisTemplate;
 		this.responseTopic= responseTopic;
 		this.exexutingProcessRender= exexutingProcessRender;
@@ -37,16 +38,17 @@ public class RedisReceiverService {
 			String imageBase64 = exexutingProcessRender.rederingHtmlImage(information.getHtml(), information.getData());
 			String uuid = getUUID();
 			saveImageTemplate(uuid, imageBase64);
-			sendIdResultNotification(uuid);
+			sendIdResultNotification(uuid, requestId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			sendErrorNotification(requestId);
 		}
 	}
 	
-	private void sendIdResultNotification(String id) {
+	private void sendIdResultNotification(String id, String sessionId) {
 		Map<String,String> payload= new HashMap<>();
 		payload.put("id", id);
+		payload.put("sessionId", sessionId);
 		payload.put("status", "COMPLETED");
 		redisTemplate.convertAndSend(responseTopic.getTopic(), payload);
 	}

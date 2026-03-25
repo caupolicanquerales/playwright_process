@@ -7,7 +7,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import java.util.Map;
+
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import com.capo.playwright_process.services.RedisReceiverService;
@@ -28,7 +31,7 @@ public class RedisConfig {
 	@Bean
     MessageListenerAdapter messageListener(RedisReceiverService receiver) {
         MessageListenerAdapter adapter = new MessageListenerAdapter(receiver, "receiveMessage");
-        adapter.setSerializer(new GenericJackson2JsonRedisSerializer());
+        adapter.setSerializer(new Jackson2JsonRedisSerializer<>(Map.class));
         return adapter;
     }
 	

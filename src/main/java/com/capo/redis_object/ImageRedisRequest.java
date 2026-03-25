@@ -1,4 +1,4 @@
-package com.capo.playwright_process.request;
+package com.capo.redis_object;
 
 public class ImageRedisRequest {
 	
