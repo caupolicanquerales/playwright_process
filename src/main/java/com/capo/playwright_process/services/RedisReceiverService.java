@@ -18,10 +18,10 @@ public class RedisReceiverService {
 	
 	private final RedisTemplate<String, Object> redisTemplate;
 	private final ChannelTopic responseTopic;
-	private final ExexutingProcessRenderHtml exexutingProcessRender;
+	private final ExecutingProcessRenderHtml exexutingProcessRender;
 	
 	public RedisReceiverService(RedisTemplate<String, Object> redisTemplate,
-			@Qualifier("responseTopic") ChannelTopic responseTopic, ExexutingProcessRenderHtml exexutingProcessRender) {
+			@Qualifier("responseTopic") ChannelTopic responseTopic, ExecutingProcessRenderHtml exexutingProcessRender) {
 		this.redisTemplate= redisTemplate;
 		this.responseTopic= responseTopic;
 		this.exexutingProcessRender= exexutingProcessRender;
@@ -35,7 +35,7 @@ public class RedisReceiverService {
 				sendErrorNotification(requestId);
 				return;
 			}
-			String imageBase64 = exexutingProcessRender.rederingHtmlImage(information.getHtml(), information.getData());
+			String imageBase64 = exexutingProcessRender.rederingHtmlImage(information);
 			String uuid = getUUID();
 			saveImageTemplate(uuid, imageBase64);
 			sendIdResultNotification(uuid, requestId);

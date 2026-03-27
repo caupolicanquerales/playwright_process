@@ -4,6 +4,7 @@ public class ImageRedisRequest {
 	
 	private String html;
 	private String data;
+	private String images;
 	
 	public String getHtml() {
 		return html;
@@ -16,6 +17,12 @@ public class ImageRedisRequest {
 	}
 	public void setData(String data) {
 		this.data = data;
+	}
+	public String getImages() {
+		return images;
+	}
+	public void setImages(String images) {
+		this.images = images;
 	}
 	
 }
