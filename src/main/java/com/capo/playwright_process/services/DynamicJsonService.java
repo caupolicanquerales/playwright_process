@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,7 +18,7 @@ public class DynamicJsonService {
 
 	public Map<String, Object> extractAllData(String rawHtml) {
         try {
-            String cleanText = Jsoup.parse(rawHtml).text();
+            String cleanText = rawHtml.replaceAll("<[^>]*>", "");
             int start = -1;
             int end = -1;
             int depth = 0;

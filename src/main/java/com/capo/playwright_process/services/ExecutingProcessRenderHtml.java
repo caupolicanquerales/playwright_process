@@ -27,8 +27,10 @@ public class ExecutingProcessRenderHtml {
 	public String rederingHtmlImage(ImageRedisRequest imageRedis) {
 		Map<String, Object> mapVariables= dynamicJsonService.extractAllData(Optional.ofNullable(imageRedis.getData()).orElse(""));
 		Map<String, Object> mapVariablesImages= dynamicJsonService.extractAllData(Optional.ofNullable(imageRedis.getImages()).orElse(""));
+		Map<String, Object> mapVariablesPublicity= dynamicJsonService.extractAllData(Optional.ofNullable(imageRedis.getPublicity()).orElse(""));
 		Map<String, Object> merged = new HashMap<>(mapVariables);
 		merged.putAll(mapVariablesImages);
+		merged.putAll(mapVariablesPublicity);
 		Context context = new Context();
 		context.setVariables(merged);
 		String htmlTemplate= templateEngine.process(imageRedis.getHtml(),context);
